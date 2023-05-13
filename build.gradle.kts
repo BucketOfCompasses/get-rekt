@@ -8,8 +8,10 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
 	id("fabric-loom") version "1.2-SNAPSHOT"
-	id("org.jetbrains.kotlin.jvm") version "1.8.21"
 	id("org.quiltmc.gradle.licenser") version "2.+"
+
+	kotlin("jvm") version "1.8.21"
+	kotlin("plugin.serialization") version "1.5.0"
 }
 
 val javaVersion = 17
