@@ -1,0 +1,26 @@
+{
+	"schemaVersion": 1,
+	"id": "get-rekt",
+	"version": "${version}",
+
+	"name": "Get Rekt",
+	"description": "Moderation tool for wrecking people who behave badly.",
+	"authors": [ "Compasses", "gdude2002" ],
+	"contact": { "sources": "https://github.com/BucketOfCompasses/get-rekt" },
+
+	"license": "",
+	"icon": "assets/modid/icon.png",
+
+	"environment": "*",
+	"entrypoints": {
+		"main": [ "compasses.getrekt.Main" ]
+	},
+	"mixins": [ "getrekt.mixins.json" ],
+
+	"depends": {
+		"fabricloader": ">=0.14.19",
+		"fabric-api": "*",
+		"minecraft": ">=1.20-beta.1",
+		"java": ">=17"
+	}
+}
