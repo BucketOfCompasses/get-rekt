@@ -8,7 +8,7 @@
 	"authors": [ "Compasses", "gdude2002" ],
 	"contact": { "sources": "https://github.com/BucketOfCompasses/get-rekt" },
 
-	"license": "",
+	"license": "MPL-2.0",
 	"icon": "assets/get-rekt/icon.png",
 
 	"environment": "*",
