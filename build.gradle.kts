@@ -22,6 +22,21 @@ val fabric_kotlin_api_version: String by project
 val homoglyph_version: String by project
 val loader_version: String by project
 val minecraft_version: String by project
+val modmenu_version: String by project
+
+repositories {
+	exclusiveContent {
+		forRepository {
+			maven {
+				name = "Modrinth"
+				url = uri("https://api.modrinth.com/maven")
+			}
+		}
+		filter {
+			includeGroup("maven.modrinth")
+		}
+	}
+}
 
 dependencies {
 	minecraft("com.mojang:minecraft:${minecraft_version}")
@@ -31,6 +46,8 @@ dependencies {
 	modImplementation("net.fabricmc.fabric-api:fabric-api:$fabric_api_version")
 	modImplementation("net.fabricmc:fabric-language-kotlin:$fabric_kotlin_api_version")
 	modImplementation("net.fabricmc:fabric-loader:$loader_version")
+
+	modRuntimeOnly("maven.modrinth:modmenu:$modmenu_version")
 
 	implementation("net.codebox:homoglyph:$homoglyph_version")
 	include("net.codebox:homoglyph:$homoglyph_version")
