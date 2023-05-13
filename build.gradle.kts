@@ -9,6 +9,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
 	id("fabric-loom") version "1.2-SNAPSHOT"
 	id("org.quiltmc.gradle.licenser") version "2.+"
+	id("io.github.juuxel.loom-quiltflower") version "1.8.0"
 
 	kotlin("jvm") version "1.8.21"
 	kotlin("plugin.serialization") version "1.5.0"
