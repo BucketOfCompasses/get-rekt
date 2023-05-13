@@ -9,7 +9,7 @@
 	"contact": { "sources": "https://github.com/BucketOfCompasses/get-rekt" },
 
 	"license": "",
-	"icon": "assets/modid/icon.png",
+	"icon": "assets/get-rekt/icon.png",
 
 	"environment": "*",
 	"entrypoints": {
