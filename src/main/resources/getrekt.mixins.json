@@ -3,7 +3,10 @@
 	"minVersion": "0.8",
 	"package": "compasses.getrekt.mixin",
 	"compatibilityLevel": "JAVA_17",
-	"mixins": [ ],
+	"mixins": [
+		"PlayerMessageMixin",
+		"SignEditMixin"
+	],
 	"client": [ ],
 	"injectors": { "defaultRequire": 1 }
 }
