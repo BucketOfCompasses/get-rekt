@@ -13,7 +13,12 @@
 
 	"environment": "*",
 	"entrypoints": {
-		"main": [ "compasses.getrekt.Main" ]
+		"main": [
+			{
+				"adapter": "kotlin",
+				"value": "compasses.getrekt.Main"
+			}
+		]
 	},
 	"mixins": [ "getrekt.mixins.json" ],
 
