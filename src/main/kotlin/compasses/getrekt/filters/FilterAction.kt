@@ -54,7 +54,7 @@ sealed class FilterAction {
 				)
 			)
 
-			event.player.connection.disconnect(TranslationFallbacks.withFallback("getrekt.multiplayer.banned"))
+			event.player.connection.disconnect(TranslationFallbacks.withFallback("get-rekt.multiplayer.banned"))
 
 			return false
 		}
@@ -65,7 +65,7 @@ sealed class FilterAction {
 		override val severity: Int = 3
 
 		override fun invoke(event: Event): Boolean {
-			event.player.connection.disconnect(TranslationFallbacks.withFallback("getrekt.multiplayer.kicked"))
+			event.player.connection.disconnect(TranslationFallbacks.withFallback("get-rekt.multiplayer.kicked"))
 
 			return false
 		}

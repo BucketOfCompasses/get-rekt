@@ -11,6 +11,7 @@ import com.mojang.brigadier.Command
 import compasses.getrekt.storage.MuteStorage
 import net.fabricmc.api.ModInitializer
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback
+import net.fabricmc.loader.api.FabricLoader
 import net.minecraft.ChatFormatting
 import net.minecraft.commands.Commands
 import net.minecraft.commands.arguments.GameProfileArgument
@@ -98,5 +99,9 @@ fun MutableComponent.moderationMessage(): Component {
 }
 
 fun Player.bypassesModeration(): Boolean {
+	// todo: remove before release.
+	if (FabricLoader.getInstance().isDevelopmentEnvironment) {
+		return false
+	}
 	return hasPermissions(Commands.LEVEL_ADMINS)
 }
