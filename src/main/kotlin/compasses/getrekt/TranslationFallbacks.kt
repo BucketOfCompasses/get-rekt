@@ -6,26 +6,44 @@
 
 package compasses.getrekt
 
+import com.google.gson.GsonBuilder
+import com.google.gson.JsonObject
+import net.fabricmc.loader.api.FabricLoader
 import net.minecraft.network.chat.Component
 import net.minecraft.network.chat.MutableComponent
+import java.io.IOException
+import java.lang.IllegalStateException
+import java.nio.file.Files
 
 object TranslationFallbacks {
+	private lateinit var fallbacks : MutableMap<String, String>
+
 	fun withFallback(translationKey: String, vararg params: Any): MutableComponent {
 		return Component.translatableWithFallback(translationKey, getFallback(translationKey), *params)
 	}
 
-	// todo: load these from the en_us.json or use one of kotlin's fancy thing for code gen
 	private fun getFallback(translationKey: String) : String {
-		return when(translationKey) {
-			"get-rekt.action.muted" -> "You have been muted."
-			"get-rekt.action.unmuted" -> "You have been unmuted."
-			"get-rekt.command.muted" -> "%s has been muted."
-			"get-rekt.command.unknown_player" -> "Command failed, unknown player: %s."
-			"get-rekt.command.already_muted" -> "%s is already muted."
-			"get-rekt.command.not_muteable" -> "%s is not able to be muted."
-			"get-rekt.command.unmuted" -> "%s has been unmuted."
-			"get-rekt.command.already_not_muted" -> "%s is already not muted."
-			else -> throw IllegalArgumentException("Unknown translation key.")
+		if (!::fallbacks.isInitialized) {
+			val mod = FabricLoader.getInstance().getModContainer("get-rekt").orElseThrow()
+			val translationsPath = mod.findPath("assets/get-rekt/lang/en_us.json").orElseThrow()
+
+			try {
+				val reader = Files.newBufferedReader(translationsPath)
+				val gson = GsonBuilder().create()
+				val obj = gson.fromJson(reader, JsonObject::class.java)
+				fallbacks = mutableMapOf()
+				obj.entrySet().forEach {
+					fallbacks[it.key] = it.value.asString
+				}
+			} catch (exception : IOException) {
+				throw IllegalStateException("Could not read translation file.")
+			}
 		}
+
+		if (translationKey in fallbacks) {
+			return fallbacks[translationKey]!!
+		}
+
+		throw IllegalArgumentException("Unknown translations key.")
 	}
 }
