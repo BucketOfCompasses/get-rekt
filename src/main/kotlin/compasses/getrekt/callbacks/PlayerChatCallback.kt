@@ -7,15 +7,15 @@
 package compasses.getrekt.callbacks
 
 import compasses.getrekt.Event.PlayerChat
-import compasses.getrekt.Main
 import compasses.getrekt.filters.FilterType
+import compasses.getrekt.storage.FilterStorage
 import net.minecraft.network.protocol.game.ServerboundChatPacket
 import net.minecraft.server.level.ServerPlayer
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo
 
 object PlayerChatCallback {
 	operator fun invoke(player: ServerPlayer, packet: ServerboundChatPacket, ci: CallbackInfo) {
-		val filter = Main.firstFilterOrNull(packet.message(), FilterType.TEXT)
+		val filter = FilterStorage.firstOrNull(packet.message(), FilterType.TEXT)
 			?: return
 
 		val event = PlayerChat(player, packet.message())

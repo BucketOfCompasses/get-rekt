@@ -8,10 +8,6 @@ package compasses.getrekt
 
 import com.mojang.authlib.GameProfile
 import com.mojang.brigadier.Command
-import compasses.getrekt.filters.Filter
-import compasses.getrekt.filters.FilterAction
-import compasses.getrekt.filters.FilterType
-import compasses.getrekt.filters.MatchType
 import compasses.getrekt.storage.MuteStorage
 import net.fabricmc.api.ModInitializer
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback
@@ -94,19 +90,6 @@ object Main : ModInitializer {
 									})
 			)
 		}
-	}
-
-	// todo: find fixed places for these & actually implement.
-
-	@JvmStatic
-	fun firstFilterOrNull(raw: String, filterType: FilterType): Filter? {
-		// NOTE: Sort by severity, use the most severe first
-
-		if (raw.contains("beans") && filterType == FilterType.TEXT) {
-			return Filter("beans", MatchType.CONTAINS, FilterAction.MuteAction, FilterType.TEXT)
-		}
-
-		return null
 	}
 }
 

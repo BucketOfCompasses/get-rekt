@@ -7,8 +7,8 @@
 package compasses.getrekt.callbacks
 
 import compasses.getrekt.Event
-import compasses.getrekt.Main
 import compasses.getrekt.filters.FilterType
+import compasses.getrekt.storage.FilterStorage
 import compasses.getrekt.storage.MuteStorage
 import net.minecraft.core.BlockPos
 import net.minecraft.network.chat.Component
@@ -60,7 +60,7 @@ object SignEditCallback {
 
 		val newText = newSignData.joinToString("\n") { it.raw }
 
-		val filter = Main.firstFilterOrNull(newText, FilterType.TEXT)
+		val filter = FilterStorage.firstOrNull(newText, FilterType.TEXT)
 			?: return
 
 		val event = Event.SignUpdate(serverPlayer, pos, oldText, newText)
