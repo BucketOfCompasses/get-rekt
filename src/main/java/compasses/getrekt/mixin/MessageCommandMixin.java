@@ -8,24 +8,25 @@ package compasses.getrekt.mixin;
 
 import compasses.getrekt.storage.MuteStorage;
 import net.minecraft.commands.CommandSourceStack;
-import net.minecraft.network.chat.ChatType;
 import net.minecraft.network.chat.PlayerChatMessage;
-import net.minecraft.server.players.PlayerList;
+import net.minecraft.server.commands.MsgCommand;
+import net.minecraft.server.level.ServerPlayer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(PlayerList.class)
-public class PlayerEmoteSayMixin {
+import java.util.Collection;
+
+@Mixin(MsgCommand.class)
+public class MessageCommandMixin {
 	@Inject(
-			method = "broadcastChatMessage(Lnet/minecraft/network/chat/PlayerChatMessage;Lnet/minecraft/commands/CommandSourceStack;Lnet/minecraft/network/chat/ChatType$Bound;)V",
+			method = "sendMessage(Lnet/minecraft/commands/CommandSourceStack;Ljava/util/Collection;Lnet/minecraft/network/chat/PlayerChatMessage;)V",
 			at = @At("HEAD"),
 			cancellable = true
 	)
-	private void getrekt$beforeMessageBroadcast(PlayerChatMessage message, CommandSourceStack sender, ChatType.Bound boundChatType, CallbackInfo ci) {
-		//noinspection DataFlowIssue
-		if (sender.isPlayer() && MuteStorage.INSTANCE.isMuted(sender.getPlayer())) {
+	private static void getrekt$beforeMessageSend(CommandSourceStack source, Collection<ServerPlayer> targets, PlayerChatMessage message, CallbackInfo ci) {
+		if (source.isPlayer() && MuteStorage.INSTANCE.isMuted(source.getPlayer())) {
 			ci.cancel();
 		}
 	}

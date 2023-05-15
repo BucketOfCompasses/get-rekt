@@ -4,9 +4,11 @@
 	"package": "compasses.getrekt.mixin",
 	"compatibilityLevel": "JAVA_17",
 	"mixins": [
+		"MessageCommandMixin",
 		"PlayerChatMixin",
 		"PlayerEmoteSayMixin",
-		"SignEditMixin"
+		"SignEditMixin",
+		"TeamMessageCommandMixin"
 	],
 	"client": [ ],
 	"injectors": {
