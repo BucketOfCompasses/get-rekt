@@ -24,7 +24,7 @@ object FilterStorage {
 				.filter { it.filterType == filterType }
 				.firstOrNull {
 					when (it.matchType) {
-						MatchType.CONTAINS -> homoglyphs.search(raw, it.match.lowercase()).size > 0
+						MatchType.CONTAINS -> homoglyphs.search(raw, it.match).size > 0
 						MatchType.EXACT -> raw.equals(it.match, ignoreCase = true)
 						MatchType.REGEX_CONTAINS -> raw.contains(it.match.toRegex(RegexOption.IGNORE_CASE))
 						MatchType.REGEX -> it.match.toRegex(RegexOption.IGNORE_CASE).matches(raw)
