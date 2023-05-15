@@ -7,10 +7,9 @@
 package compasses.getrekt.filters
 
 import compasses.getrekt.Event
-import compasses.getrekt.Main
+import compasses.getrekt.storage.MuteStorage
 import kotlinx.serialization.Serializable
 import net.minecraft.network.chat.Component
-import net.minecraft.server.level.ServerPlayer
 import net.minecraft.server.players.UserBanListEntry
 
 /**
@@ -77,7 +76,7 @@ sealed class FilterAction {
 		override val severity: Int = 2
 
 		override fun invoke(event: Event): Boolean {
-			Main.mutePlayer(event.player.uuid)
+			MuteStorage.mute(event.player)
 
 			return false
 		}
