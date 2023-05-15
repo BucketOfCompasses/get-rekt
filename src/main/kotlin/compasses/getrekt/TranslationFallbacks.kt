@@ -17,6 +17,8 @@ object TranslationFallbacks {
 			"get-rekt.command.unknown_player" -> "Command failed, unknown player: %s."
 			"get-rekt.command.already_muted" -> "%s is already muted."
 			"get-rekt.command.not_muteable" -> "%s is not able to be muted."
+			"get-rekt.command.unmuted" -> "%s has been unmuted."
+			"get-rekt.command.already_not_muted" -> "%s is already not muted."
 			else -> throw IllegalArgumentException("Unknown translation key.")
 		}
 	}

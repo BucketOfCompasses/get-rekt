@@ -1,8 +1,8 @@
 package compasses.getrekt.storage
 
 import compasses.getrekt.TranslationFallbacks
+import compasses.getrekt.bypassesModeration
 import compasses.getrekt.moderationMessage
-import net.minecraft.commands.Commands
 import net.minecraft.world.entity.player.Player
 import java.util.UUID
 
@@ -14,19 +14,24 @@ object MuteStorage {
 	}
 
 	fun mute(player: Player) : Boolean {
-		if (player.hasPermissions(Commands.LEVEL_ADMINS)) {
+		if (player.bypassesModeration()) {
 			return false
 		}
-		val added = players.add(player.uuid)
-		if (added) {
+		if (players.add(player.uuid)) {
 			player.sendSystemMessage(TranslationFallbacks.withFallback("get-rekt.action.muted").moderationMessage())
+			return true
 		}
-		return added
+		return false
 	}
 
-	fun unmute(player: Player) {
+	fun unmute(player: Player) : Boolean {
+		if (player.bypassesModeration()) {
+			return false
+		}
 		if (players.remove(player.uuid)) {
 			player.sendSystemMessage(TranslationFallbacks.withFallback("get-rekt.action.unmuted").moderationMessage())
+			return true
 		}
+		return false
 	}
 }
