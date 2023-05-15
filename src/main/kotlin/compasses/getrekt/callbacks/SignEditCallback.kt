@@ -9,6 +9,7 @@ package compasses.getrekt.callbacks
 import compasses.getrekt.Event
 import compasses.getrekt.Main
 import compasses.getrekt.filters.FilterType
+import compasses.getrekt.storage.MuteStorage
 import net.minecraft.core.BlockPos
 import net.minecraft.network.chat.Component
 import net.minecraft.server.level.ServerPlayer
@@ -38,6 +39,19 @@ object SignEditCallback {
 		val serverPlayer = player as? ServerPlayer
 			?: return
 
+		val oldText = oldSignData.joinToString("\n") { it.string }
+
+		if (MuteStorage.isMuted(serverPlayer)) {
+			if (oldText.isBlank()) {
+				level.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState())
+			} else {
+				level.sendBlockUpdated(pos, state, state, 3)
+			}
+
+			ci.cancel()
+			return
+		}
+
 		// todo: check if FakePlayer, try get owning player, log action if filter matches
 		// val fp : FakePlayer? = serverPlayer as? FakePlayer
 		// val owner : ServerPlayer? = serverPlayer.server.playerList.players.firstOrNull {
@@ -49,7 +63,6 @@ object SignEditCallback {
 		val filter = Main.firstFilterOrNull(newText, FilterType.TEXT)
 			?: return
 
-		val oldText = oldSignData.joinToString("\n") { it.string }
 		val event = Event.SignUpdate(serverPlayer, pos, oldText, newText)
 
 		if (!filter.action(event)) {
