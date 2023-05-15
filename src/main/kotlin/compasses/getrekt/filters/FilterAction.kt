@@ -6,33 +6,100 @@
 
 package compasses.getrekt.filters
 
+import compasses.getrekt.Event
 import compasses.getrekt.Main
+import kotlinx.serialization.Serializable
 import net.minecraft.network.chat.Component
 import net.minecraft.server.level.ServerPlayer
 import net.minecraft.server.players.UserBanListEntry
 
-enum class FilterAction(val func: (ServerPlayer, String?, String) -> Unit) {
-	MUTE({ player, oldText, newText ->
-		Main.mutePlayer(player.uuid)
+/**
+ * Sealed class representing a filter action.
+ *
+ * Subtypes implement specific action behaviors.
+ */
+@Serializable
+sealed class FilterAction {
+	/** For ordering - higher numbers mean more severe actions. **/
+	abstract val severity: Int
 
-		// todo: send webhook message
-	}),
-	KICK({ player, oldText, newText ->
-		player.connection.disconnect(Component.translatable("getrekt.multiplayer.kicked"))
+	/**
+	 * Callback to be run when this filter action happens.
+	 *
+	 * @param event Event that triggered this action
+	 *
+	 * @return Whether to allow the action to proceed - `true` to allow, `false` to cancel
+	 */
+	abstract operator fun invoke(event: Event): Boolean
 
-		// todo: send webhook message
-	}),
-	BAN({ player, oldText, newText ->
-		val banList = player.server.playerList.bans
+	companion object {
+		/** Set containing all possible action types. **/
+		val actions = linkedSetOf(MuteAction, BanAction, KickAction, CancelAction, LogOnlyAction)
+	}
 
-		banList.add(UserBanListEntry(player.gameProfile, null, "Get Rekt: Filter", null,  "Banned by Get Rekt."))
+	/** Banning filter action - ban the user when this action is triggered. **/
+	object BanAction : FilterAction() {
+		override val severity: Int = 4
 
-		player.connection.disconnect(Component.translatable("getrekt.multiplayer.banned"))
+		override fun invoke(event: Event): Boolean {
+			val banList = event.player.server.playerList.bans
 
-		// todo: send webhook message
-	});
+			banList.add(
+				UserBanListEntry(
+					event.player.gameProfile,
 
-	fun action(player: ServerPlayer, oldText: String?, newText: String) {
-		func(player, oldText, newText)
+					null,                    // When the ban was created
+					"Get Rekt: Filter",     // Source of the ban
+					null,                   // When the ban expires
+					"Banned by Get Rekt."  // The ban reason
+				)
+			)
+
+			event.player.connection.disconnect(Component.translatable("getrekt.multiplayer.banned"))
+
+			return false
+		}
+	}
+
+	/** Kicking filter action - kick the user when this action is triggered. **/
+	object KickAction : FilterAction() {
+		override val severity: Int = 3
+
+		override fun invoke(event: Event): Boolean {
+			event.player.connection.disconnect(Component.translatable("getrekt.multiplayer.kicked"))
+
+			return false
+		}
+	}
+
+	/** Muting filter action - mute the user when this action is triggered. **/
+	object MuteAction : FilterAction() {
+		override val severity: Int = 2
+
+		override fun invoke(event: Event): Boolean {
+			Main.mutePlayer(event.player.uuid)
+
+			return false
+		}
+	}
+
+	/** Canceling filter action - cancel the action the user took, but don't do anything else. **/
+	object CancelAction : FilterAction() {
+		override val severity: Int = 1
+
+		override fun invoke(event: Event): Boolean {
+			return false
+		}
+	}
+
+	// todo: this needs more context in some situations e.g. where the sign was placed
+
+	/** Logging filter action - log the action the user took, but don't prevent them from doing it. **/
+	object LogOnlyAction : FilterAction() {
+		override val severity: Int = -1
+
+		override fun invoke(event: Event): Boolean {
+			return true
+		}
 	}
 }

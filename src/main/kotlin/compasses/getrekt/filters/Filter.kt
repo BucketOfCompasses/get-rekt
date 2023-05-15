@@ -6,15 +6,16 @@
 
 package compasses.getrekt.filters
 
-import net.minecraft.server.level.ServerPlayer
+import compasses.getrekt.Event
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class Filter(
-		val match: String,
-		val matchType: MatchType,
-		val action: FilterAction,
-		val filterType: FilterType
+	val match: String,
+	val matchType: MatchType,
+	val filterAction: FilterAction,
+	val filterType: FilterType
 ) {
-	fun action(player: ServerPlayer, oldText: String?, newText: String) {
-		action.action(player, oldText, newText)
-	}
+	fun action(event: Event): Boolean =
+		filterAction(event)
 }

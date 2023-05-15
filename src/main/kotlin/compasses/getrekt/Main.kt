@@ -7,7 +7,9 @@
 package compasses.getrekt
 
 import compasses.getrekt.filters.Filter
+import compasses.getrekt.filters.FilterAction
 import compasses.getrekt.filters.FilterType
+import compasses.getrekt.filters.MatchType
 import net.fabricmc.api.ModInitializer
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -32,6 +34,12 @@ object Main : ModInitializer {
 
 	@JvmStatic
 	fun firstFilterOrNull(raw: String, filterType: FilterType): Filter? {
-		TODO("Not yet implemented")
+		// NOTE: Sort by severity, use the most severe first
+
+		if (raw.contains("beans") && filterType == FilterType.TEXT) {
+			return Filter("beans", MatchType.CONTAINS, FilterAction.CancelAction, FilterType.TEXT)
+		}
+
+		return null
 	}
 }

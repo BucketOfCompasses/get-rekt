@@ -4,6 +4,7 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
+import net.fabricmc.loom.configuration.ide.RunConfigSettings
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
@@ -14,6 +15,15 @@ plugins {
 	kotlin("jvm") version "1.8.21"
 	kotlin("plugin.serialization") version "1.5.0"
 }
+
+//loom {
+//	runs {
+//		named("client") {
+//			vmArg("-Dmixin.debug=true")
+//			vmArg("-Dmixin.debug.export=true")
+//		}
+//	}
+//}
 
 val javaVersion = 17
 
@@ -26,6 +36,7 @@ val homoglyph_version: String by project
 val loader_version: String by project
 val minecraft_version: String by project
 val modmenu_version: String by project
+val parchment_version: String by project
 
 repositories {
 	exclusiveContent {
@@ -39,12 +50,27 @@ repositories {
 			includeGroup("maven.modrinth")
 		}
 	}
+
+	exclusiveContent {
+		forRepository {
+			maven{
+				name = "ParchmentMC Maven"
+				url = uri("https://maven.parchmentmc.org")
+			}
+		}
+		filter {
+			includeGroup("org.parchmentmc.data")
+		}
+	}
 }
 
 dependencies {
 	minecraft("com.mojang:minecraft:${minecraft_version}")
 
-	mappings(loom.officialMojangMappings())
+	mappings(loom.layered {
+		officialMojangMappings()
+		parchment("org.parchmentmc.data:parchment-${parchment_version}@zip");
+	})
 
 	modImplementation("net.fabricmc.fabric-api:fabric-api:$fabric_api_version")
 	modImplementation("net.fabricmc:fabric-language-kotlin:$fabric_kotlin_api_version")

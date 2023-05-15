@@ -6,9 +6,7 @@
 
 package compasses.getrekt.mixin;
 
-import compasses.getrekt.Main;
-import compasses.getrekt.filters.Filter;
-import compasses.getrekt.filters.FilterType;
+import compasses.getrekt.mixin.callbacks.PlayerChatCallback;
 import net.minecraft.network.protocol.game.ServerboundChatPacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
@@ -19,7 +17,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ServerGamePacketListenerImpl.class)
-public class PlayerMessageMixin {
+public class PlayerChatMixin {
 	@Shadow
 	public ServerPlayer player;
 
@@ -32,10 +30,7 @@ public class PlayerMessageMixin {
 			cancellable = true
 	)
 	private void getrekt$beforeChatSent(ServerboundChatPacket packet, CallbackInfo ci) {
-		Filter filter = Main.firstFilterOrNull(packet.message(), FilterType.TEXT);
-
-		if (filter != null) {
-			filter.action(player, null, packet.message());
+		if (PlayerChatCallback.INSTANCE.invoke(player, packet)) {
 			ci.cancel();
 		}
 	}

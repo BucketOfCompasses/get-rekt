@@ -6,15 +6,10 @@
 
 package compasses.getrekt.mixin;
 
-import compasses.getrekt.Main;
-import compasses.getrekt.filters.Filter;
-import compasses.getrekt.filters.FilterType;
+import compasses.getrekt.mixin.callbacks.SignEditCallback;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.network.FilteredText;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.SignBlockEntity;
@@ -26,7 +21,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.util.Arrays;
 import java.util.List;
 
 @Mixin(SignBlockEntity.class)
@@ -47,16 +41,17 @@ public abstract class SignEditMixin extends BlockEntity {
 			cancellable = true
 	)
 	private void getrekt$preSignTextUpdated(Player updater, boolean isFront, List<FilteredText> lines, CallbackInfo ci) {
-		String text = String.join("\n", lines.stream().map(FilteredText::raw).toList());
+		SignEditCallback.INSTANCE.invoke(
+				level,
 
-		Filter filter = Main.firstFilterOrNull(text, FilterType.TEXT);
+				getBlockPos(),
+				getBlockState(),
 
-		if (filter != null) { // if filter matches on any line
-			var oldText = String.join("\n", Arrays.stream(getText(isFront).getMessages(false)).map(Component::getString).toList());
+				updater,
+				getText(isFront).getMessages(false),
+				lines,
 
-			filter.action((ServerPlayer) updater, oldText, text);
-			level.setBlockAndUpdate(getBlockPos(), Blocks.AIR.defaultBlockState());
-			ci.cancel();
-		}
+				ci
+		);
 	}
 }
