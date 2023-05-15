@@ -4,7 +4,7 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package compasses.getrekt.mixin.callbacks
+package compasses.getrekt.callbacks
 
 import compasses.getrekt.Event
 import compasses.getrekt.Main

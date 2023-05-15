@@ -6,7 +6,7 @@
 
 package compasses.getrekt.mixin;
 
-import compasses.getrekt.mixin.callbacks.PlayerChatCallback;
+import compasses.getrekt.callbacks.PlayerChatCallback;
 import net.minecraft.network.protocol.game.ServerboundChatPacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
@@ -30,8 +30,6 @@ public class PlayerChatMixin {
 			cancellable = true
 	)
 	private void getrekt$beforeChatSent(ServerboundChatPacket packet, CallbackInfo ci) {
-		if (PlayerChatCallback.INSTANCE.invoke(player, packet)) {
-			ci.cancel();
-		}
+		PlayerChatCallback.INSTANCE.invoke(player, packet, ci);
 	}
 }

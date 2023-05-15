@@ -6,7 +6,7 @@
 
 package compasses.getrekt.mixin;
 
-import compasses.getrekt.mixin.callbacks.SignEditCallback;
+import compasses.getrekt.callbacks.SignEditCallback;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.network.FilteredText;
 import net.minecraft.world.entity.player.Player;
