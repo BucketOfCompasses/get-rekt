@@ -4,7 +4,6 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import net.fabricmc.loom.configuration.ide.RunConfigSettings
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
@@ -29,14 +28,6 @@ val javaVersion = 17
 
 val archives_base_name: String by project
 base.archivesName.set(archives_base_name)
-
-val fabric_api_version: String by project
-val fabric_kotlin_api_version: String by project
-val homoglyph_version: String by project
-val loader_version: String by project
-val minecraft_version: String by project
-val modmenu_version: String by project
-val parchment_version: String by project
 
 repositories {
 	exclusiveContent {
@@ -65,21 +56,22 @@ repositories {
 }
 
 dependencies {
-	minecraft("com.mojang:minecraft:${minecraft_version}")
+	minecraft(libs.minecraft)
 
+	@Suppress("UnstableApiUsage")
 	mappings(loom.layered {
 		officialMojangMappings()
-		parchment("org.parchmentmc.data:parchment-${parchment_version}@zip");
+		parchment(libs.parchment)
 	})
 
-	modImplementation("net.fabricmc.fabric-api:fabric-api:$fabric_api_version")
-	modImplementation("net.fabricmc:fabric-language-kotlin:$fabric_kotlin_api_version")
-	modImplementation("net.fabricmc:fabric-loader:$loader_version")
+	modImplementation(libs.fabric.loader)
+	modImplementation(libs.fabric.api)
+	modImplementation(libs.fabric.kotlin)
 
-	modRuntimeOnly("maven.modrinth:modmenu:$modmenu_version")
+	modRuntimeOnly(libs.modmenu)
 
-	implementation("net.codebox:homoglyph:$homoglyph_version")
-	include("net.codebox:homoglyph:$homoglyph_version")
+	implementation(libs.homoglyph)
+	include(libs.homoglyph)
 }
 
 tasks {
