@@ -43,7 +43,7 @@ object Main : ModInitializer {
 												context.source.sendSystemMessage(TranslationFallbacks.withFallback("get-rekt.command.unknown_player", target.name ?: target.id))
 											} else {
 												if (MuteStorage.mute(player)) {
-													context.source.sendSuccess(TranslationFallbacks.withFallback("get-rekt.command.muted", player.name.string), true)
+													context.source.sendSuccess({ TranslationFallbacks.withFallback("get-rekt.command.muted", player.name.string) }, true)
 													success = true
 												} else {
 													if (player.bypassesModeration()) {
@@ -75,7 +75,7 @@ object Main : ModInitializer {
 												context.source.sendSystemMessage(TranslationFallbacks.withFallback("get-rekt.command.unknown_player", target.name ?: target.id))
 											} else {
 												if (MuteStorage.unmute(player)) {
-													context.source.sendSuccess(TranslationFallbacks.withFallback("get-rekt.command.unmuted", player.name.string), true)
+													context.source.sendSuccess({ TranslationFallbacks.withFallback("get-rekt.command.unmuted", player.name.string) }, true)
 													success = true
 												} else {
 													if (player.bypassesModeration()) {
