@@ -21,7 +21,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.List;
 
 @Mixin(TeamMsgCommand.class)
-public class TeamMessageCommandMixin {
+public abstract class TeamMessageCommandMixin {
 	@Inject(
 			method = "sendMessage(Lnet/minecraft/commands/CommandSourceStack;Lnet/minecraft/world/entity/Entity;Lnet/minecraft/world/scores/PlayerTeam;Ljava/util/List;Lnet/minecraft/network/chat/PlayerChatMessage;)V",
 			at = @At("HEAD"),

@@ -19,7 +19,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.Collection;
 
 @Mixin(MsgCommand.class)
-public class MessageCommandMixin {
+public abstract class MessageCommandMixin {
 	@Inject(
 			method = "sendMessage(Lnet/minecraft/commands/CommandSourceStack;Ljava/util/Collection;Lnet/minecraft/network/chat/PlayerChatMessage;)V",
 			at = @At("HEAD"),

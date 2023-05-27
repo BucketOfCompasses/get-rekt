@@ -15,19 +15,21 @@ plugins {
 	kotlin("plugin.serialization") version "1.5.0"
 }
 
-//loom {
+val javaVersion = 17
+
+val archives_base_name: String by project
+base.archivesName.set(archives_base_name)
+
+loom {
+	accessWidenerPath.set(file("src/main/resources/${archives_base_name}.accessWidener"))
+
 //	runs {
 //		named("client") {
 //			vmArg("-Dmixin.debug=true")
 //			vmArg("-Dmixin.debug.export=true")
 //		}
 //	}
-//}
-
-val javaVersion = 17
-
-val archives_base_name: String by project
-base.archivesName.set(archives_base_name)
+}
 
 repositories {
 	exclusiveContent {
