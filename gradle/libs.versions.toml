@@ -2,13 +2,13 @@
 
 # Minecraft dependencies
 
-minecraft = { group = "com.mojang", name = "minecraft", version = "1.20-pre2" }
+minecraft = { group = "com.mojang", name = "minecraft", version = "1.20-pre6" }
 parchment = { group = "org.parchmentmc.data", name = "parchment-1.19.3", version = "2023.03.12" }
 
 # Mod dependencies
 
 fabric_loader = { group = "net.fabricmc", name = "fabric-loader", version = "0.14.19" }
-fabric_api = { group = "net.fabricmc.fabric-api", name = "fabric-api", version = "0.81.2+1.20" }
+fabric_api = { group = "net.fabricmc.fabric-api", name = "fabric-api", version = "0.82.1+1.20" }
 fabric_kotlin = { group = "net.fabricmc", name = "fabric-language-kotlin", version = "1.9.4+kotlin.1.8.21" }
 
 homoglyph = { group = "net.codebox", name = "homoglyph", version = "1.2.1" }
