@@ -134,5 +134,6 @@ tasks {
 
 	license {
 		rule(file("LICENSE_HEADER"))
+		exclude("**/*.accessWidener")
 	}
 }
