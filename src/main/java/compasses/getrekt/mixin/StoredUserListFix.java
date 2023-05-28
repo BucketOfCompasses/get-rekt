@@ -17,32 +17,31 @@ import java.util.Map;
 
 // https://bugs.mojang.com/browse/MC-158900
 @Mixin(StoredUserList.class)
-public abstract class StoredUserListFix<K, V extends StoredUserEntry<K>> {
+public abstract class StoredUserListFix<User, Entry extends StoredUserEntry<User>> {
 	@Shadow
 	@Final
-	private Map<String, V> map;
+	private Map<String, Entry> map;
 
 	@Shadow
-	protected abstract String getKeyForUser(K obj);
+	protected abstract String getKeyForUser(User user);
 
 	@Shadow
-	public abstract void remove(K user);
+	public abstract void remove(User user);
 
 	/**
 	 * @author Compasses (Get Rekt)
 	 * @reason Code optimization & method intention fix.
 	 */
 	@Overwrite
-	public boolean contains(K entry) { // Target method is protected... idk why we have to declare public here.
-		String key = getKeyForUser(entry);
-		V value = map.get(key);
+	public boolean contains(User user) { // Target method is protected... idk why we have to declare public here.
+		Entry entry = map.get(getKeyForUser(user));
 
-		if (value != null) {
-			if (!value.hasExpired()) {
+		if (entry != null) {
+			if (!entry.hasExpired()) {
 				return true;
 			}
 
-			remove(entry);
+			remove(user);
 		}
 
 		return false;
