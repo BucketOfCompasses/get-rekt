@@ -18,8 +18,8 @@ import java.util.Map;
 // https://bugs.mojang.com/browse/MC-158900
 @Mixin(StoredUserList.class)
 public abstract class StoredUserListFix<User, Entry extends StoredUserEntry<User>> {
-	@Shadow
 	@Final
+	@Shadow
 	private Map<String, Entry> map;
 
 	@Shadow
