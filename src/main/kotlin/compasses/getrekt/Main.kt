@@ -10,12 +10,6 @@ import compasses.getrekt.commands.MuteCommands
 import compasses.getrekt.commands.TempBanCommand
 import net.fabricmc.api.ModInitializer
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback
-import net.fabricmc.loader.api.FabricLoader
-import net.minecraft.ChatFormatting
-import net.minecraft.commands.Commands
-import net.minecraft.network.chat.Component
-import net.minecraft.network.chat.MutableComponent
-import net.minecraft.world.entity.player.Player
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
@@ -29,16 +23,4 @@ object Main : ModInitializer {
 			TempBanCommand.initialize(dispatcher)
 		}
 	}
-}
-
-fun MutableComponent.moderationMessage(): Component {
-	return this.withStyle(ChatFormatting.GREEN)
-}
-
-fun Player.bypassesModeration(): Boolean {
-	// todo: remove before release.
-	if (FabricLoader.getInstance().isDevelopmentEnvironment) {
-		return false
-	}
-	return hasPermissions(Commands.LEVEL_ADMINS)
 }

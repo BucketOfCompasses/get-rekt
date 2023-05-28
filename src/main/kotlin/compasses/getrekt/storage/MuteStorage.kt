@@ -6,7 +6,7 @@
 
 package compasses.getrekt.storage
 
-import compasses.getrekt.TranslationFallbacks
+import compasses.getrekt.Translations
 import compasses.getrekt.bypassesModeration
 import compasses.getrekt.moderationMessage
 import net.minecraft.world.entity.player.Player
@@ -24,7 +24,7 @@ object MuteStorage {
 			return false
 		}
 		if (players.add(player.uuid)) {
-			player.sendSystemMessage(TranslationFallbacks.withFallback("get-rekt.action.muted").moderationMessage())
+			player.sendSystemMessage(Translations.get("get-rekt.action.muted").moderationMessage())
 			return true
 		}
 		return false
@@ -35,7 +35,7 @@ object MuteStorage {
 			return false
 		}
 		if (players.remove(player.uuid)) {
-			player.sendSystemMessage(TranslationFallbacks.withFallback("get-rekt.action.unmuted").moderationMessage())
+			player.sendSystemMessage(Translations.get("get-rekt.action.unmuted").moderationMessage())
 			return true
 		}
 		return false

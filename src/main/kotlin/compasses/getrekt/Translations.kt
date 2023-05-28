@@ -15,10 +15,10 @@ import java.io.IOException
 import java.lang.IllegalStateException
 import java.nio.file.Files
 
-object TranslationFallbacks {
+object Translations {
 	private lateinit var fallbacks : MutableMap<String, String>
 
-	fun withFallback(translationKey: String, vararg params: Any): MutableComponent {
+	fun get(translationKey: String, vararg params: Any): MutableComponent {
 		return Component.translatableWithFallback(translationKey, getFallback(translationKey), *params)
 	}
 

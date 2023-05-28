@@ -7,7 +7,7 @@
 package compasses.getrekt.filters
 
 import compasses.getrekt.Event
-import compasses.getrekt.TranslationFallbacks
+import compasses.getrekt.Translations
 import compasses.getrekt.storage.MuteStorage
 import kotlinx.serialization.Serializable
 import net.minecraft.server.players.UserBanListEntry
@@ -54,7 +54,7 @@ sealed class FilterAction {
 				)
 			)
 
-			event.player.connection.disconnect(TranslationFallbacks.withFallback("get-rekt.multiplayer.banned"))
+			event.player.connection.disconnect(Translations.get("get-rekt.multiplayer.banned"))
 
 			return false
 		}
@@ -65,7 +65,7 @@ sealed class FilterAction {
 		override val severity: Int = 3
 
 		override fun invoke(event: Event): Boolean {
-			event.player.connection.disconnect(TranslationFallbacks.withFallback("get-rekt.multiplayer.kicked"))
+			event.player.connection.disconnect(Translations.get("get-rekt.multiplayer.kicked"))
 
 			return false
 		}
