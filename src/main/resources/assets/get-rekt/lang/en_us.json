@@ -1,13 +1,14 @@
 {
-	"get-rekt.action.muted":                "You have been muted.",
-	"get-rekt.action.unmuted":              "You have been unmuted.",
-	"get-rekt.command.muted":               "%s has been muted.",
-	"get-rekt.command.unknown_player":      "Command failed, unknown player: %s.",
-	"get-rekt.command.already_muted":       "%s is already muted.",
-	"get-rekt.command.not_muteable":        "%s is not able to be muted.",
-	"get-rekt.command.unmuted":             "%s has been unmuted.",
-	"get-rekt.command.already_not_muted":   "%s is already not muted.",
-	"get-rekt.multiplayer.banned":          "You are banned from this server.",
-	"get-rekt.multiplayer.kicked":          "You have been kicked.",
-	"get-rekt.multiplayer.banned.duration": "\nYour ban will expire in %s."
+	"get-rekt.action.muted":                 "You have been muted.",
+	"get-rekt.action.unmuted":               "You have been unmuted.",
+	"get-rekt.command.muted":                "%s has been muted.",
+	"get-rekt.command.unknown_player":       "Command failed, unknown player: %s.",
+	"get-rekt.command.already_muted":        "%s is already muted.",
+	"get-rekt.command.not_muteable":         "%s is not able to be muted.",
+	"get-rekt.command.unmuted":              "%s has been unmuted.",
+	"get-rekt.command.already_not_muted":    "%s is already not muted.",
+	"get-rekt.command.failed_find_duration": "Failed to find duration at start or end of provided input.",
+	"get-rekt.multiplayer.banned":           "You are banned from this server.",
+	"get-rekt.multiplayer.kicked":           "You have been kicked.",
+	"get-rekt.multiplayer.banned.duration":  "\nYour ban will expire in %s."
 }
