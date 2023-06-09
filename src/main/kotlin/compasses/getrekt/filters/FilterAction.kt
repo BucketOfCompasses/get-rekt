@@ -11,6 +11,7 @@ import compasses.getrekt.Translations
 import compasses.getrekt.storage.MuteStorage
 import kotlinx.serialization.Serializable
 import net.minecraft.server.players.UserBanListEntry
+import java.util.*
 
 /**
  * Sealed class representing a filter action.
@@ -76,7 +77,8 @@ sealed class FilterAction {
 		override val severity: Int = 2
 
 		override fun invoke(event: Event): Boolean {
-			MuteStorage.mute(event.player)
+			// todo: Make it so MuteAction can be configured with a mute duration e.g. 5 minutes
+			MuteStorage.mute(event.player, Date(), null, "Get Rekt: Filter", "Muted by Get Rekt.")
 
 			return false
 		}

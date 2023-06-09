@@ -35,7 +35,7 @@ object TempBanCommand {
 						val reasonDurationPair = StringArgumentType.getString(this, "reason / duration")
 
 						val commandActor = try {
-							CommandActor(targets, reasonDurationPair)
+							CommandActor(targets, reasonDurationPair, false)
 						} catch (exception : IllegalArgumentException) {
 								source.sendSystemMessage(Translations.get("get-rekt.command.failed_find_duration"))
 								return@runs 0

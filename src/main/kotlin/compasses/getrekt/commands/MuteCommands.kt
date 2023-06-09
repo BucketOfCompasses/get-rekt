@@ -9,11 +9,13 @@ package compasses.getrekt.commands
 import com.mojang.authlib.GameProfile
 import com.mojang.brigadier.Command
 import com.mojang.brigadier.CommandDispatcher
+import com.mojang.brigadier.arguments.StringArgumentType
 import compasses.getrekt.*
 import compasses.getrekt.storage.MuteStorage
 import net.minecraft.commands.CommandSourceStack
 import net.minecraft.commands.Commands
 import net.minecraft.commands.arguments.GameProfileArgument
+import java.lang.IllegalArgumentException
 
 object MuteCommands {
 	fun initialize(dispatcher: CommandDispatcher<CommandSourceStack>) {
@@ -24,17 +26,25 @@ object MuteCommands {
 				runs {
 					val targets: Collection<GameProfile> = GameProfileArgument.getGameProfiles(this, "targets")
 
-					var success = false
+					val reasonDurationPair = StringArgumentType.getString(this, "reason / duration")
 
-					for (target in targets) {
+					val commandActor = try {
+						CommandActor(targets, reasonDurationPair, true)
+					} catch (exception: IllegalArgumentException) {
+						source.sendSystemMessage(Translations.get("get-rekt.command.failed_find_duration"))
+						return@runs 0
+					}
+
+					val mutes = commandActor.act { target ->
 						val player = source.level.getPlayerByUUID(target.id)
 
 						if (player == null) {
 							source.sendSystemMessage(Translations.get("get-rekt.command.unknown_player", target.name ?: target.id))
 						} else {
-							if (MuteStorage.mute(player)) {
+							if (MuteStorage.mute(player, commandActor.startDate, commandActor.endDate, source.textName, commandActor.reason)) {
 								source.sendSuccess({ Translations.get("get-rekt.command.muted", player.name.string) }, true)
-								success = true
+
+								return@act true
 							} else {
 								if (player.bypassesModeration()) {
 									source.sendSystemMessage(Translations.get("get-rekt.command.not_muteable", player.name.string))
@@ -43,9 +53,11 @@ object MuteCommands {
 								}
 							}
 						}
+
+						return@act false
 					}
 
-					return@runs if (success) Command.SINGLE_SUCCESS else 0
+					return@runs mutes
 				}
 			}
 		}
@@ -64,7 +76,8 @@ object MuteCommands {
 						val player = source.level.getPlayerByUUID(target.id)
 
 						if (player == null) {
-							source.sendSystemMessage(Translations.get("get-rekt.command.unknown_player", target.name ?: target.id))
+							source.sendSystemMessage(Translations.get("get-rekt.command.unknown_player", target.name
+									?: target.id))
 						} else {
 							if (MuteStorage.unmute(player)) {
 								source.sendSuccess({ Translations.get("get-rekt.command.unmuted", player.name.string) }, true)

@@ -19,7 +19,8 @@ import kotlin.time.toDuration
 
 private const val DURATION_REGEX = "([1-9][0-9]*) (years|months|weeks|days|hours|minutes|year|month|week|day|hour|minute)"
 
-class CommandActor(private val targets: Collection<GameProfile>, reasonDurationPair: String) {
+// todo: implement optional durations, different impls?
+class CommandActor(private val targets: Collection<GameProfile>, reasonDurationPair: String, allowNoDuration: Boolean) {
 	private val durationFormat = MeasureFormat.getInstance(Locale.ENGLISH, MeasureFormat.FormatWidth.WIDE)
 
 	private val startInstant = Clock.System.now()
@@ -44,6 +45,7 @@ class CommandActor(private val targets: Collection<GameProfile>, reasonDurationP
 		}
 
 		if (foundDuration == null) {
+			// todo: probably not IllegalArgumentException, SimpleCommandExceptionType
 			throw IllegalArgumentException("Invalid input for reasonDurationPair")
 		}
 

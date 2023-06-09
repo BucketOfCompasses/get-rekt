@@ -10,16 +10,18 @@ import compasses.getrekt.Translations
 import compasses.getrekt.bypassesModeration
 import compasses.getrekt.moderationMessage
 import net.minecraft.world.entity.player.Player
+import java.util.Date
 import java.util.UUID
 
 object MuteStorage {
+	// todo: rework like vanilla bans so it can have start & end date, banner name & reason information
 	private val players : MutableSet<UUID> = mutableSetOf()
 
 	fun isMuted(player: Player): Boolean {
 		return players.contains(player.uuid)
 	}
 
-	fun mute(player: Player) : Boolean {
+	fun mute(player: Player, startDate: Date, endDate: Date?, textName: String, reason: String) : Boolean {
 		if (player.bypassesModeration()) {
 			return false
 		}
